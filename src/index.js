@@ -6,25 +6,32 @@
 
 import { Notify } from 'notiflix/build/notiflix-notify-aio';
 import PixabayApiService from './js/pixabay-service';
+import { fillGallery } from './js/template';
 
 // const BASE_URL = 'https://pixabay.com/api/';
 // const API_KEY = '39344710-74bbb124ce1c1439ca3e67f9f';
 
 const searchform = document.querySelector('#search-form');
-const gallery = document.querySelector('.gallery');
+const galleryList = document.querySelector('.gallery');
 const btnLoadMore = document.querySelector('.load-more');
 
 const pixabayApi = new PixabayApiService();
 
 const searchSubmitHandler = e => {
   e.preventDefault();
+  clearHitsGallery();
   pixabayApi.searchQuery = e.currentTarget.elements.searchQuery.value; //ссылка на форму для динамического поиска
   pixabayApi.resetPage();
-  pixabayApi.fetchHits().then(hits => console.log(hits));
+  pixabayApi.fetchHits().then(fillGallery);
 };
 
 searchLoadMoreHandler = () => {
-  pixabayApi.fetchHits().then(hits => console.log(hits));
+  pixabayApi.fetchHits().then(fillGallery);
 };
+
+function clearHitsGallery() {
+  galleryList.innerHTML = '';
+}
+
 searchform.addEventListener('submit', searchSubmitHandler);
 btnLoadMore.addEventListener('click', searchLoadMoreHandler);
