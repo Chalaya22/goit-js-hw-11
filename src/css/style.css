@@ -1,13 +1,84 @@
-.is-hidden {
-  display: none;
-}
-.gallery {
-  display: flex;
-  gap: 15px;
-  flex-wrap: wrap;
-  padding: 20px;
-  justify-content: center;
-}
 body {
-  background-color: aqua;
+  background-color: rgb(242, 238, 238);
+}
+.load-more {
+  display: block;
+  margin-left: auto;
+  margin-right: auto;
+}
+.load-more:hover,
+.load-more:focus {
+  background-color: #404bbf;
+  color: aliceblue;
+}
+.search-form {
+  display: flex;
+  justify-content: center;
+  gap: 10px;
+  padding: 10px;
+  margin-bottom: 14px;
+}
+.btnSearch:hover {
+  background-color: #404bbf;
+  color: aliceblue;
+}
+
+a {
+  text-decoration: none;
+  color: black;
+  margin-top: 38px;
+  font-weight: 350;
+  font-size: 14px;
+  line-height: 0.28;
+  letter-spacing: -0.02em;
+  text-transform: lowercase;
+}
+
+.gallery {
+  padding: 20px;
+}
+
+.gallery img {
+  display: block;
+  width: 100%;
+  height: auto;
+}
+
+.photo-card {
+  max-width: 360px;
+  height: 400px;
+  overflow: hidden;
+  display: inline-block;
+  color: white;
+  position: relative;
+  background-color: white;
+}
+
+.info-item {
+  display: flex;
+  justify-content: start;
+  align-items: start;
+  text-decoration: none;
+}
+
+.photo-card:hover img {
+  transform: scale(1.1);
+}
+
+.photo-card:hover > .info {
+  background-color: rgba(0, 0, 0, 0.5);
+  transform: translateY(-50%);
+}
+
+.photo-card:hover {
+  cursor: pointer;
+}
+
+@media screen and (min-width: 1200px) {
+  .gallery {
+    display: flex;
+    gap: 15px;
+    flex-wrap: wrap;
+    justify-content: center;
+  }
 }

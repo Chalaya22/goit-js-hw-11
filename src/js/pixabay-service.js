@@ -31,10 +31,10 @@ export default class PixabayApiService {
     this.page = 1; // сбрасывает страничку в еденичку
   }
 
-  // get searchQuery() {
-  //   return this.searchingQuery;
-  // }
-  // set searchQuery(newSearchingQuery) {
-  //   this.searchingQuery = newSearchingQuery;
-  // }
+  get searchQuery() {
+    return this.searchingQuery;
+  }
+  set searchQuery(newSearchingQuery) {
+    this.searchingQuery = newSearchingQuery;
+  }
 }
