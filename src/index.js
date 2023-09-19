@@ -16,16 +16,27 @@ const galleryList = document.querySelector('.gallery');
 const btnLoadMore = document.querySelector('.load-more');
 
 const pixabayApi = new PixabayApiService();
+let searchQueryResult = '';
 
 async function searchSubmitHandler(e) {
   e.preventDefault();
-  clearHitsGallery();
+
   pixabayApi.searchQuery = e.currentTarget.elements.searchQuery.value; //ссылка на форму для динамического поиска
+
+  // if () {
+  //   return Notify.failure(
+  //     'Sorry, there are no images matching your search query. Please try again.'
+  //   );
+  // }
+
   pixabayApi.resetPage();
   pixabayApi.fetchHits().then(hits => {
     clearHitsGallery();
     fillGallery(hits);
     const gallaryStuye = new SimpleLightbox('.gallery a').refresh();
+    if (hits.length === 0) {
+      return badRequest();
+    }
   });
 }
 

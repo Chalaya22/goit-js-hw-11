@@ -13,10 +13,10 @@ export default class PixabayApiService {
     console.log(this); // перед каждым артиклом видим ссылку на наш обьект
 
     const url = `${BASE_URL}?key=${API_KEY}&q=${this.searchingQuery}&image_type=photo&orientation=horizontal&safesearch=true&per_page=4&page=${this.page}`;
-    return fetch(url)
-      .then(r => r.json())
+    return axios(url)
+      .then(r => r.data)
       .then(data => {
-        // console.log(data);
+        console.log(data);
         this.incrementPage();
         return data.hits;
       });
