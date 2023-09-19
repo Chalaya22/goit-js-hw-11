@@ -15,15 +15,9 @@ const searchform = document.querySelector('#search-form');
 const galleryList = document.querySelector('.gallery');
 const btnLoadMore = document.querySelector('.load-more');
 
-new SimpleLightbox('.link_of_gallary', {
-  captionsData: 'alt',
-  captionPosition: 'bottom',
-  captionDelay: 300,
-});
-
 const pixabayApi = new PixabayApiService();
 
-const searchSubmitHandler = e => {
+async function searchSubmitHandler(e) {
   e.preventDefault();
   clearHitsGallery();
   pixabayApi.searchQuery = e.currentTarget.elements.searchQuery.value; //ссылка на форму для динамического поиска
@@ -31,9 +25,9 @@ const searchSubmitHandler = e => {
   pixabayApi.fetchHits().then(hits => {
     clearHitsGallery();
     fillGallery(hits);
+    const gallaryStuye = new SimpleLightbox('.gallery a').refresh();
   });
-  // gallery.refresh();
-};
+}
 
 searchLoadMoreHandler = () => {
   pixabayApi.fetchHits().then(fillGallery);
@@ -42,9 +36,13 @@ searchLoadMoreHandler = () => {
 function clearHitsGallery() {
   galleryList.innerHTML = ' ';
 }
+const badRequest = () => {
+  Notify.failure(
+    'Sorry, there are no images matching your search query. Please try again.'
+  );
+};
 
 function fillGallery(arr) {
-  const galleryList = document.querySelector('.gallery');
   const template = arr
     .map(
       hit => `<div class="photo-card">

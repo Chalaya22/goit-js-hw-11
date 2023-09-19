@@ -1,10 +1,8 @@
-// import axios from 'axios';
-// axios.defaults.headers.common['x-api-key'] =
-//   'live_ArwZ5FQbdEO9JEaPL9lt29Bd5vQ1BQWcfYtXLyZyQUO1zLKhna3wIM9pin9mvn0g';
-// import SimpleLightbox from 'simplelightbox';
-// import 'simplelightbox/dist/simple-lightbox.min.css';
-// const BASE_URL = 'https://pixabay.com/api/';
-// const API_KEY = '39344710-74bbb124ce1c1439ca3e67f9f';
+import axios from 'axios';
+
+const BASE_URL = 'https://pixabay.com/api/';
+const API_KEY = '39344710-74bbb124ce1c1439ca3e67f9f';
+
 export default class PixabayApiService {
   constructor() {
     this.searchingQuery = '';
@@ -13,13 +11,12 @@ export default class PixabayApiService {
 
   fetchHits() {
     console.log(this); // перед каждым артиклом видим ссылку на наш обьект
-    const BASE_URL = 'https://pixabay.com/api/';
-    const API_KEY = '39344710-74bbb124ce1c1439ca3e67f9f';
+
     const url = `${BASE_URL}?key=${API_KEY}&q=${this.searchingQuery}&image_type=photo&orientation=horizontal&safesearch=true&per_page=4&page=${this.page}`;
     return fetch(url)
       .then(r => r.json())
       .then(data => {
-        console.log(data);
+        // console.log(data);
         this.incrementPage();
         return data.hits;
       });
