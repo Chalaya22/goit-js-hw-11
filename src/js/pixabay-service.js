@@ -9,18 +9,20 @@ export default class PixabayApiService {
     this.page = 1;
   }
 
-  fetchHits() {
+  async fetchHits() {
     console.log(this); // перед каждым артиклом видим ссылку на наш обьект
-
-    const url = `${BASE_URL}?key=${API_KEY}&q=${this.searchingQuery}&image_type=photo&orientation=horizontal&safesearch=true&per_page=4&page=${this.page}`;
-    return axios(url)
-      .then(r => r.data)
-      .then(data => {
-        console.log(data);
-        this.incrementPage();
-        return data.hits;
-      });
+    try {
+      const response = await axios(
+        `${BASE_URL}?key=${API_KEY}&q=${this.searchingQuery}&image_type=photo&orientation=horizontal&safesearch=true&per_page=4&page=${this.page}`
+      );
+      console.log(response);
+      this.incrementPage();
+      return response.data.hits;
+    } catch (error) {
+      console.log(error.message);
+    }
   }
+
   incrementPage() {
     this.page += 1;
   }

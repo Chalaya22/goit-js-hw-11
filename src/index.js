@@ -1,52 +1,54 @@
-// import axios from 'axios';
-// axios.defaults.headers.common['x-api-key'] =
-//   'live_ArwZ5FQbdEO9JEaPL9lt29Bd5vQ1BQWcfYtXLyZyQUO1zLKhna3wIM9pin9mvn0g';
 import SimpleLightbox from 'simplelightbox';
 import 'simplelightbox/dist/simple-lightbox.min.css';
 
 import { Notify } from 'notiflix/build/notiflix-notify-aio';
 import PixabayApiService from './js/pixabay-service';
-// import { fillGallery } from './js/template';
-
-// const BASE_URL = 'https://pixabay.com/api/';
-// const API_KEY = '39344710-74bbb124ce1c1439ca3e67f9f';
+import LoadMoreBtn from './js/loadMoreBtn';
 
 const searchform = document.querySelector('#search-form');
 const galleryList = document.querySelector('.gallery');
-const btnLoadMore = document.querySelector('.load-more');
+// const btnLoadMore = document.querySelector();
 
 const pixabayApi = new PixabayApiService();
-let searchQueryResult = '';
+const loadMoreBtn = new LoadMoreBtn({ selector: '.load-more', hidden: true });
 
 async function searchSubmitHandler(e) {
   e.preventDefault();
 
   pixabayApi.searchQuery = e.currentTarget.elements.searchQuery.value; //ссылка на форму для динамического поиска
 
-  // if () {
-  //   return Notify.failure(
-  //     'Sorry, there are no images matching your search query. Please try again.'
-  //   );
-  // }
+  loadMoreBtn.show();
+  loadMoreBtn.disabled();
 
   pixabayApi.resetPage();
   pixabayApi.fetchHits().then(hits => {
     clearHitsGallery();
     fillGallery(hits);
+    loadMoreBtn.enable();
     const gallaryStuye = new SimpleLightbox('.gallery a').refresh();
     if (hits.length === 0) {
       return badRequest();
+    } else {
+      return successRequest();
     }
   });
 }
 
 searchLoadMoreHandler = () => {
-  pixabayApi.fetchHits().then(fillGallery);
+  loadMoreBtn.disabled();
+  pixabayApi.fetchHits().then(hits => {
+    fillGallery(hits);
+  });
+  loadMoreBtn.enable();
 };
 
 function clearHitsGallery() {
   galleryList.innerHTML = ' ';
 }
+// let quantity = hits.totalHits.value;
+const successRequest = quantity => {
+  Notify.success(`Hooray! We found ${quantity} images.`);
+};
 const badRequest = () => {
   Notify.failure(
     'Sorry, there are no images matching your search query. Please try again.'
@@ -80,4 +82,5 @@ function fillGallery(arr) {
 }
 
 searchform.addEventListener('submit', searchSubmitHandler);
-btnLoadMore.addEventListener('click', searchLoadMoreHandler);
+// btnLoadMore.addEventListener('click', searchLoadMoreHandler);
+loadMoreBtn.refs.button.addEventListener('click', searchLoadMoreHandler);
