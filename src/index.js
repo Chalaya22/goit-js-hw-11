@@ -33,7 +33,7 @@ async function searchSubmitHandler(e) {
     if (!pixabayApi.searchQuery) {
       loadMoreBtn.hide();
       clearHitsGallery();
-      Notify.info('Empty');
+      return fillSearchQuery();
     }
     if (response.hits.length === 0) {
       loadMoreBtn.hide();
@@ -69,9 +69,9 @@ function clearHitsGallery() {
   galleryList.innerHTML = ' ';
 }
 
-const successRequest = () => {
-  Notify.success(`Hooray! We found ${response.totalHits} images.`);
-};
+// const successRequest = () => {
+//   Notify.success(`Hooray! We found ${response.totalHits} images.`);
+// };
 const badRequest = () => {
   Notify.failure(
     'Sorry, there are no images matching your search query. Please try again.'
@@ -80,6 +80,9 @@ const badRequest = () => {
 // const lastPageOf = () => {
 //   Notify.info("We're sorry, but you've reached the end of search results");
 // };
+export const fillSearchQuery = () => {
+  Notify.info('Empty');
+};
 
 function fillGallery(arr) {
   const template = arr
