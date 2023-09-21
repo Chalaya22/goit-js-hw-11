@@ -60,6 +60,7 @@ async function searchLoadMoreHandler() {
     const response = await pixabayApi.fetchHits();
     fillGallery(response.hits);
     loadMoreBtn.enable();
+    const gallaryStuye = new SimpleLightbox('.gallery a').refresh();
   } catch (error) {
     console.log(error);
   }
