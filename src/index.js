@@ -46,7 +46,7 @@ async function searchLoadMoreHandler() {
   loadMoreBtn.disabled();
   try {
     const response = await pixabayApi.fetchHits();
-    fillGallery(response);
+    fillGallery(response.hits);
     loadMoreBtn.enable();
   } catch (error) {
     console.log(error);
