@@ -17,28 +17,29 @@ async function searchSubmitHandler(e) {
 
   pixabayApi.searchQuery = e.currentTarget.elements.searchQuery.value.trim(); //ссылка на форму для динамического поиска
 
-  pixabayApi.picturesOnPage = 0;
-
   loadMoreBtn.show();
   loadMoreBtn.disabled();
 
   pixabayApi.resetPage();
+  pixabayApi.quantityOnPage = 0;
   try {
     const response = await pixabayApi.fetchHits();
     console.log(response);
+
     clearHitsGallery();
     fillGallery(response.hits);
     loadMoreBtn.enable();
 
     const gallaryStuye = new SimpleLightbox('.gallery a').refresh();
-    if (response.length === 0) {
+    if (response.hits.length === 0) {
       return badRequest();
     }
     if (response) {
       Notify.success(`Hooray! We found ${response.totalHits} images.`);
     }
-    if (response.hirs >= totalHits) {
-      lastPageOf();
+    pixabayApi.quantityOnPage += response.hits.length;
+    if (totalHits <= pixabayApi.quantityOnPage) {
+      Notify.info("We're sorry, but you've reached the end of search results");
     }
   } catch (error) {
     console.log(error);
@@ -68,9 +69,9 @@ const badRequest = () => {
     'Sorry, there are no images matching your search query. Please try again.'
   );
 };
-const lastPageOf = () => {
-  Notify.info("We're sorry, but you've reached the end of search results");
-};
+// const lastPageOf = () => {
+//   Notify.info("We're sorry, but you've reached the end of search results");
+// };
 
 function fillGallery(arr) {
   const template = arr
