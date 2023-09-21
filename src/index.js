@@ -18,28 +18,36 @@ async function searchSubmitHandler(e) {
   pixabayApi.searchQuery = e.currentTarget.elements.searchQuery.value.trim(); //ссылка на форму для динамического поиска
 
   loadMoreBtn.show();
-  loadMoreBtn.disabled();
 
   pixabayApi.resetPage();
   pixabayApi.quantityOnPage = 0;
+
   try {
     const response = await pixabayApi.fetchHits();
     console.log(response);
 
     clearHitsGallery();
     fillGallery(response.hits);
-    loadMoreBtn.enable();
 
     const gallaryStuye = new SimpleLightbox('.gallery a').refresh();
+    if (!pixabayApi.searchQuery) {
+      loadMoreBtn.hide();
+      clearHitsGallery();
+      Notify.info('Please, write something');
+    }
     if (response.hits.length === 0) {
+      loadMoreBtn.hide();
       return badRequest();
     }
     if (response) {
+      loadMoreBtn.disabled();
+      loadMoreBtn.enable();
       Notify.success(`Hooray! We found ${response.totalHits} images.`);
     }
     pixabayApi.quantityOnPage += response.hits.length;
     if (totalHits <= pixabayApi.quantityOnPage) {
       Notify.info("We're sorry, but you've reached the end of search results");
+      loadMoreBtn.hide();
     }
   } catch (error) {
     console.log(error);
@@ -61,9 +69,9 @@ function clearHitsGallery() {
   galleryList.innerHTML = ' ';
 }
 
-// const successRequest = () => {
-//   Notify.success(`Hooray! We found ${quantity} images.`);
-// };
+const successRequest = () => {
+  Notify.success(`Hooray! We found ${response.totalHits} images.`);
+};
 const badRequest = () => {
   Notify.failure(
     'Sorry, there are no images matching your search query. Please try again.'

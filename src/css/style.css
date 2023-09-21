@@ -88,6 +88,9 @@ a {
 .photo-card:hover {
   cursor: pointer;
 }
+.button {
+  margin-bottom: 100px;
+}
 .button.is-hidden {
   display: none;
 }

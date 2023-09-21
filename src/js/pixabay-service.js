@@ -13,7 +13,7 @@ export default class PixabayApiService {
     console.log(this); // перед каждым артиклом видим ссылку на наш обьект
     try {
       const response = await axios(
-        `${BASE_URL}?key=${API_KEY}&q=${this.searchingQuery}&image_type=photo&orientation=horizontal&safesearch=true&per_page=100&page=${this.page}`
+        `${BASE_URL}?key=${API_KEY}&q=${this.searchingQuery}&image_type=photo&orientation=horizontal&safesearch=true&per_page=3&page=${this.page}`
       );
       console.log(response);
       this.incrementPage();
