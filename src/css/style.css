@@ -1,7 +1,13 @@
 body {
   background-color: rgb(242, 238, 238);
 }
-
+.header {
+  width: 100%;
+  position: fixed;
+  overflow: hidden;
+  z-index: 2;
+  background-color: chocolate;
+}
 .load-more {
   display: block;
   margin-left: auto;

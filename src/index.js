@@ -27,7 +27,7 @@ async function searchSubmitHandler(e) {
     const response = await pixabayApi.fetchHits();
     console.log(response);
     clearHitsGallery();
-    fillGallery(response);
+    fillGallery(response.hits);
     loadMoreBtn.enable();
 
     const gallaryStuye = new SimpleLightbox('.gallery a').refresh();

@@ -17,7 +17,7 @@ export default class PixabayApiService {
       );
       console.log(response);
       this.incrementPage();
-      return response.data.hits;
+      return response.data;
     } catch (error) {
       console.log(error.message);
     }
