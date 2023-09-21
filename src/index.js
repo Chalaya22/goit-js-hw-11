@@ -15,44 +15,58 @@ const loadMoreBtn = new LoadMoreBtn({ selector: '.load-more', hidden: true });
 async function searchSubmitHandler(e) {
   e.preventDefault();
 
-  pixabayApi.searchQuery = e.currentTarget.elements.searchQuery.value; //ссылка на форму для динамического поиска
+  pixabayApi.searchQuery = e.currentTarget.elements.searchQuery.value.trim(); //ссылка на форму для динамического поиска
+
+  pixabayApi.picturesOnPage = 0;
 
   loadMoreBtn.show();
   loadMoreBtn.disabled();
 
   pixabayApi.resetPage();
-  pixabayApi.fetchHits().then(hits => {
+  try {
+    const response = await pixabayApi.fetchHits();
+    console.log(response);
     clearHitsGallery();
-    fillGallery(hits);
+    fillGallery(response);
     loadMoreBtn.enable();
+
     const gallaryStuye = new SimpleLightbox('.gallery a').refresh();
-    if (hits.length === 0) {
+    if (response.length === 0) {
       return badRequest();
-    } else {
-      return successRequest();
     }
-  });
+    if (response) {
+      Notify.success(`Hooray! We found ${response.totalHits} images.`);
+    }
+  } catch (error) {
+    console.log(error);
+  }
 }
 
-searchLoadMoreHandler = () => {
+async function searchLoadMoreHandler() {
   loadMoreBtn.disabled();
-  pixabayApi.fetchHits().then(hits => {
-    fillGallery(hits);
-  });
-  loadMoreBtn.enable();
-};
+  try {
+    const response = await pixabayApi.fetchHits();
+    fillGallery(response);
+    loadMoreBtn.enable();
+  } catch (error) {
+    console.log(error);
+  }
+}
 
 function clearHitsGallery() {
   galleryList.innerHTML = ' ';
 }
-// let quantity = hits.totalHits.value;
-const successRequest = quantity => {
-  Notify.success(`Hooray! We found ${quantity} images.`);
-};
+
+// const successRequest = () => {
+//   Notify.success(`Hooray! We found ${quantity} images.`);
+// };
 const badRequest = () => {
   Notify.failure(
     'Sorry, there are no images matching your search query. Please try again.'
   );
+};
+const lastPageOf = () => {
+  Notify.info("We're sorry, but you've reached the end of search results");
 };
 
 function fillGallery(arr) {
@@ -82,5 +96,4 @@ function fillGallery(arr) {
 }
 
 searchform.addEventListener('submit', searchSubmitHandler);
-// btnLoadMore.addEventListener('click', searchLoadMoreHandler);
 loadMoreBtn.refs.button.addEventListener('click', searchLoadMoreHandler);
