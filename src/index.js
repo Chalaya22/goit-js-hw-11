@@ -33,7 +33,7 @@ async function searchSubmitHandler(e) {
     if (!pixabayApi.searchQuery) {
       loadMoreBtn.hide();
       clearHitsGallery();
-      Notify.info('Please, write something');
+      Notify.info('Empty');
     }
     if (response.hits.length === 0) {
       loadMoreBtn.hide();
