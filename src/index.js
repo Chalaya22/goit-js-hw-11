@@ -37,6 +37,9 @@ async function searchSubmitHandler(e) {
     if (response) {
       Notify.success(`Hooray! We found ${response.totalHits} images.`);
     }
+    if (response.hirs >= totalHits) {
+      lastPageOf();
+    }
   } catch (error) {
     console.log(error);
   }
