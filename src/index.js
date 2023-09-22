@@ -29,7 +29,7 @@ async function searchSubmitHandler(e) {
     clearHitsGallery();
     fillGallery(response.hits);
 
-    const gallaryStuye = new SimpleLightbox('.gallery a').refresh();
+    new SimpleLightbox('.gallery a').refresh();
     if (!pixabayApi.searchQuery) {
       loadMoreBtn.hide();
       clearHitsGallery();
@@ -42,10 +42,11 @@ async function searchSubmitHandler(e) {
     if (response) {
       loadMoreBtn.disabled();
       loadMoreBtn.enable();
+      const gallaryStuye = new SimpleLightbox('.gallery a').refresh();
       Notify.success(`Hooray! We found ${response.totalHits} images.`);
     }
     pixabayApi.quantityOnPage += response.hits.length;
-    if (totalHits <= pixabayApi.quantityOnPage) {
+    if (response.totalHits <= pixabayApi.quantityOnPage) {
       Notify.info("We're sorry, but you've reached the end of search results");
       loadMoreBtn.hide();
     }
@@ -59,6 +60,12 @@ async function searchLoadMoreHandler() {
   try {
     const response = await pixabayApi.fetchHits();
     fillGallery(response.hits);
+
+    pixabayApi.quantityOnPage += response.hits.length;
+    if (response.totalHits <= pixabayApi.quantityOnPage) {
+      Notify.info("We're sorry, but you've reached the end of search results");
+      loadMoreBtn.hide();
+    }
     loadMoreBtn.enable();
     const gallaryStuye = new SimpleLightbox('.gallery a').refresh();
   } catch (error) {
